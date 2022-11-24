@@ -1,0 +1,56 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            // Use IntelliSense to find out which attributes exist for C# debugging
+            // Use hover for the description of the existing attributes
+            // For further information visit https://github.com/OmniSharp/omnisharp-vscode/blob/master/debugger-launchjson.md
+            "name": ".NET Core Launch (console)",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "build",
+            // If you have changed target frameworks, make sure to update the program path.
+            "program": "${workspaceFolder}/bin/Debug/net7.0/${config:projectName}.dll",
+            "args": [],
+            "cwd": "${workspaceFolder}/bin/Debug/net7.0/",
+            // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
+            "console": "internalConsole",
+            "stopAtEntry": false
+        },
+        {
+            "name": ".NET Core Attach",
+            "type": "coreclr",
+            "request": "attach"
+        },
+        {
+            // For this to work you need to install your public key on the remote machine so it will
+            // not require a password.  Also you need to install vsdbg on the remote machine:
+            // $ wget https://aka.ms/getvsdbgsh
+            // $ chmod +x getvsdbgsh
+            // $ sudo ./getvsdbgsh -v latest -l /opt/Microsoft/vsdbg
+            "name": "Remote Debug",
+            "type": "coreclr",
+            "request": "launch",
+            "preLaunchTask": "postdeploy",
+            "program": "${config:projectName}",
+            "args": [],
+            "cwd": "${config:targetDir}",
+            "console": "internalConsole",
+            "stopAtEntry": false,
+            "pipeTransport": {
+                "pipeCwd": "${workspaceRoot}",
+                "pipeProgram": "ssh",
+                "pipeArgs": [
+                    "pi@${config:targetMachine}"
+                ],
+                "debuggerPath": "/opt/Microsoft/vsdbg/vsdbg",
+            },
+            "env": {
+                "DISPLAY": ":0.0"
+            },
+            "logging": {
+                "moduleLoad": false
+            }
+        },
+    ]
+}

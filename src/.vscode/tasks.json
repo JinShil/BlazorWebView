@@ -1,0 +1,92 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "build",
+                "${workspaceFolder}/${config:projectName}.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "${workspaceFolder}/${config:projectName}.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "watch",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "watch",
+                "run",
+                "--project",
+                "${workspaceFolder}/${config:projectName}.csproj"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "publish Remote",
+            "command": "dotnet",
+            "type": "process",
+            "args": [
+                "publish",
+                "-c",
+                "Debug",
+                "-r",
+                "linux-arm64",
+                "--self-contained",
+                "false",
+                "${workspaceFolder}/${config:projectName}.csproj",
+                "/property:GenerateFullPaths=true",
+                "/consoleloggerparameters:NoSummary"
+            ],
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "predeploy",
+            "dependsOn": "publish Remote",
+            "command": "ssh",
+            "type": "shell",
+            "args": [
+                "pi@${config:targetMachine}",
+                "mkdir -p ${config:targetDir}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "deploy",
+            "dependsOn": "predeploy",
+            "command": "bash",
+            "type": "shell",
+            "args": [
+                "-c",
+                "rsync -ruv --delete bin/Debug/net7.0/linux-arm64/publish/* pi@${config:targetMachine}:${config:targetDir}"
+            ],
+            "problemMatcher": []
+        },
+        {
+            "label": "postdeploy",
+            "dependsOn": "deploy",
+            "command": "ssh",
+            "type": "shell",
+            "args": [
+                "pi@${config:targetMachine}",
+                "chmod +x ${config:targetDir}/${config:projectName}"
+            ],
+            "problemMatcher": []
+        }
+    ]
+}
