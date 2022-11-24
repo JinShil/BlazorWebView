@@ -15,6 +15,6 @@ dotnet run
 ```
 
 ## Status
-This poject was tested on the Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  In the [src.vscode] directory the necessary configuration to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC can be found.
+This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  In the [src/.vscode](https://github.com/JinShil/BlazorWebView/tree/main/src/.vscode) directory the necessary configuration to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC can be found.
 
 BlazorWebView has only been tested the most basic Counter component, so it really only serves as a working proof of concept at this time.
