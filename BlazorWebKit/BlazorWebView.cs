@@ -6,12 +6,12 @@ using Microsoft.AspNetCore.Components;
 using System.Web;
 using System.Reflection;
 
-namespace BlazorWebView;
+namespace BlazorWebKit;
 
 using static Gtk;
 using static WebKit;
 
-class BlazorWebView : WebView
+public class BlazorWebView : WebView
 {
     class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
     {

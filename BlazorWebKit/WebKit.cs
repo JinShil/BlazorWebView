@@ -1,6 +1,6 @@
 using System.Runtime.InteropServices;
 
-namespace BlazorWebView;
+namespace BlazorWebKit;
 
 internal static class WebKit
 {
