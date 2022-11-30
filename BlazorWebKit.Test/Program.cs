@@ -1,4 +1,6 @@
-﻿using Gtk;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Gtk;
 using BlazorWebKit;
 using BlazorWebKit.Test;
         
@@ -15,7 +17,25 @@ window.DeleteEvent += (o, e) =>
 };
 
 // Add the BlazorWebView
-var webView = new BlazorWebView("wwwroot/index.html", typeof(App));
+var serviceProvider = new ServiceCollection()
+    .AddBlazorWebViewOptions(new BlazorWebViewOptions() 
+    { 
+        RootComponent = typeof(App),
+        HostPath = "wwwroot/index.html"
+    })
+    .AddLogging((lb) =>
+    {
+        lb.AddSimpleConsole(options =>
+        {
+            options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
+            options.IncludeScopes = false;
+            //options.SingleLine = true;
+            options.TimestampFormat = "hh:mm:ss ";
+        })
+        .SetMinimumLevel(LogLevel.Trace);
+    })
+    .BuildServiceProvider();
+var webView = new BlazorWebView(serviceProvider);
 window.Add(webView);
 
 // Allow opening developer tools

@@ -2,6 +2,7 @@ using WebKit;
 using System.Runtime.InteropServices;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components;
 using System.Web;
 using System.Reflection;
@@ -33,20 +34,17 @@ public class BlazorWebView : WebView
                 .BuildServiceProvider();
         }
 
-        static string GetContentRoot(string hostPath)
+        public WebViewManager(WebView webView, IServiceProvider serviceProvider)
+            : base(serviceProvider, Dispatcher.CreateDefault(), _baseUri
+            , new PhysicalFileProvider(serviceProvider.GetRequiredService<BlazorWebViewOptions>().ContentRoot)
+            , new()
+            , serviceProvider.GetRequiredService<BlazorWebViewOptions>().RelativeHostPath)
         {
-            return System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(hostPath))!;
-        }
+            var options = serviceProvider.GetRequiredService<BlazorWebViewOptions>();
+            _relativeHostPath = options.RelativeHostPath;
+            _rootComponent = options.RootComponent;
+            _logger = serviceProvider.GetService<ILogger<BlazorWebView>>();
 
-        static string GetRelativeHostPath(string hostPath)
-        {
-            return System.IO.Path.GetRelativePath(GetContentRoot(hostPath), hostPath);
-        }
-
-        public WebViewManager(WebView webView, string hostPath, Type rootComponent)
-            : base(GetServiceProvider(), Dispatcher.CreateDefault(), _baseUri,  new PhysicalFileProvider(GetContentRoot(hostPath)), new(), GetRelativeHostPath(hostPath))
-        {
-            _relativeHostPath = GetRelativeHostPath(hostPath);
             WebView = webView;
             HandleWebMessageDelegate = HandleWebMessage;
             DestroyNotifyDelegate = g_free;
@@ -58,7 +56,7 @@ public class BlazorWebView : WebView
 
             Dispatcher.InvokeAsync(async () =>
             {
-                await AddRootComponentAsync(rootComponent, "#app", ParameterView.Empty);
+                await AddRootComponentAsync(_rootComponent, "#app", ParameterView.Empty);
             });
 
             var script = webkit_user_script_new(
@@ -98,6 +96,8 @@ public class BlazorWebView : WebView
         readonly void_nint_nint_nint HandleWebMessageDelegate;
         readonly void_nint DestroyNotifyDelegate;
         readonly string _relativeHostPath;
+        readonly Type _rootComponent;
+        readonly ILogger<BlazorWebView>? _logger;
 
         void HandleUriScheme(URISchemeRequest request)
         {
@@ -155,51 +155,55 @@ public class BlazorWebView : WebView
 
         protected override void NavigateCore(Uri absoluteUri)
         {
+            _logger?.LogTrace($"Navigating to {absoluteUri}");
+
             WebView.LoadUri(absoluteUri.ToString());
         }
 
         protected override void SendMessage(string message)
         {
+            _logger?.LogTrace($"Dispatching to {message}");
+
             var script = $"__dispatchMessageCallback(\"{HttpUtility.JavaScriptStringEncode(message)}\")";
 
             webkit_web_view_run_javascript(WebView.Handle, script, nint.Zero, nint.Zero, nint.Zero);
         }
     }
 
-    public BlazorWebView(string hostPath, Type rootComponent)
+    public BlazorWebView(IServiceProvider serviceProvider)
         : base ()
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
-    public BlazorWebView(nint raw, string hostPath, Type rootComponent)
+    public BlazorWebView(nint raw, IServiceProvider serviceProvider)
         : base (raw)
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
-    public BlazorWebView(WebContext context, string hostPath, Type rootComponent)
+    public BlazorWebView(WebContext context, IServiceProvider serviceProvider)
         : base (context)
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
-    public BlazorWebView(WebView web_view, string hostPath, Type rootComponent)
+    public BlazorWebView(WebView web_view, IServiceProvider serviceProvider)
         : base (web_view)
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
-    public BlazorWebView(Settings settings, string hostPath, Type rootComponent)
+    public BlazorWebView(Settings settings, IServiceProvider serviceProvider)
         : base (settings)
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
-    public BlazorWebView(UserContentManager user_content_manager, string hostPath, Type rootComponent)
+    public BlazorWebView(UserContentManager user_content_manager, IServiceProvider serviceProvider)
         : base (user_content_manager)
     {
-        _manager = new WebViewManager(this, hostPath, rootComponent);
+        _manager = new WebViewManager(this, serviceProvider);
     }
 
     readonly WebViewManager _manager;
