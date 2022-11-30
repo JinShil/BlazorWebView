@@ -23,9 +23,6 @@ public class BlazorWebView : WebView
         delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
         delegate void void_nint(nint arg0);
 
-        readonly static string _hostPagePath = $"wwwroot/index.html";
-        readonly static string _contentRootPath = System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(_hostPagePath))!;
-        readonly static string _hostPageRelativePath = System.IO.Path.GetRelativePath(_contentRootPath, _hostPagePath);
         const string _scheme = "app";
         readonly static Uri _baseUri = new Uri($"{_scheme}://localhost/");
 
@@ -36,9 +33,20 @@ public class BlazorWebView : WebView
                 .BuildServiceProvider();
         }
 
-        public WebViewManager(WebView webView, Type rootComponent)
-            : base(GetServiceProvider(), Dispatcher.CreateDefault(), _baseUri,  new PhysicalFileProvider(_contentRootPath), new(), _hostPageRelativePath)
+        static string GetContentRoot(string hostPath)
         {
+            return System.IO.Path.GetDirectoryName(System.IO.Path.GetFullPath(hostPath))!;
+        }
+
+        static string GetRelativeHostPath(string hostPath)
+        {
+            return System.IO.Path.GetRelativePath(GetContentRoot(hostPath), hostPath);
+        }
+
+        public WebViewManager(WebView webView, string hostPath, Type rootComponent)
+            : base(GetServiceProvider(), Dispatcher.CreateDefault(), _baseUri,  new PhysicalFileProvider(GetContentRoot(hostPath)), new(), GetRelativeHostPath(hostPath))
+        {
+            _relativeHostPath = GetRelativeHostPath(hostPath);
             WebView = webView;
             HandleWebMessageDelegate = HandleWebMessage;
             DestroyNotifyDelegate = g_free;
@@ -91,6 +99,7 @@ public class BlazorWebView : WebView
         public WebView WebView { get; init; }
         readonly void_nint_nint_nint HandleWebMessageDelegate;
         readonly void_nint DestroyNotifyDelegate;
+        readonly string _relativeHostPath;
 
         void HandleUriScheme(URISchemeRequest request)
         {
@@ -102,7 +111,7 @@ public class BlazorWebView : WebView
             var uri = request.Uri;
             if (request.Path == "/")
             {
-                uri += _hostPageRelativePath;
+                uri += _relativeHostPath;
             }
 
             if (TryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
@@ -159,40 +168,40 @@ public class BlazorWebView : WebView
         }
     }
 
-    public BlazorWebView(Type rootComponent)
+    public BlazorWebView(string hostPath, Type rootComponent)
         : base ()
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
-    public BlazorWebView(nint raw, Type rootComponent)
+    public BlazorWebView(nint raw, string hostPath, Type rootComponent)
         : base (raw)
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
-    public BlazorWebView(WebContext context, Type rootComponent)
+    public BlazorWebView(WebContext context, string hostPath, Type rootComponent)
         : base (context)
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
-    public BlazorWebView(WebView web_view, Type rootComponent)
+    public BlazorWebView(WebView web_view, string hostPath, Type rootComponent)
         : base (web_view)
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
-    public BlazorWebView(Settings settings, Type rootComponent)
+    public BlazorWebView(Settings settings, string hostPath, Type rootComponent)
         : base (settings)
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
-    public BlazorWebView(UserContentManager user_content_manager, Type rootComponent)
+    public BlazorWebView(UserContentManager user_content_manager, string hostPath, Type rootComponent)
         : base (user_content_manager)
     {
-        _manager = new WebViewManager(this, rootComponent);
+        _manager = new WebViewManager(this, hostPath, rootComponent);
     }
 
     readonly WebViewManager _manager;

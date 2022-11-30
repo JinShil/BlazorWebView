@@ -13,7 +13,7 @@ window.DeleteEvent += (o, e) =>
     Application.Quit();
 };
 
-var webView = new BlazorWebView(typeof(Counter));
+var webView = new BlazorWebView("wwwroot/index.html", typeof(App));
 window.Add(webView);
 
 window.ShowAll();
