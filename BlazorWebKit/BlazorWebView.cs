@@ -27,13 +27,6 @@ public class BlazorWebView : WebView
         const string _scheme = "app";
         readonly static Uri _baseUri = new Uri($"{_scheme}://localhost/");
 
-        static IServiceProvider GetServiceProvider()
-        {
-            return new ServiceCollection()
-                .AddBlazorWebView()
-                .BuildServiceProvider();
-        }
-
         public WebViewManager(WebView webView, IServiceProvider serviceProvider)
             : base(serviceProvider, Dispatcher.CreateDefault(), _baseUri
             , new PhysicalFileProvider(serviceProvider.GetRequiredService<BlazorWebViewOptions>().ContentRoot)
