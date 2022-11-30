@@ -36,7 +36,7 @@ class BlazorWebView : WebView
                 .BuildServiceProvider();
         }
 
-        public WebViewManager(WebView webView)
+        public WebViewManager(WebView webView, Type rootComponent)
             : base(GetServiceProvider(), Dispatcher.CreateDefault(), _baseUri,  new PhysicalFileProvider(_contentRootPath), new(), _hostPageRelativePath)
         {
             WebView = webView;
@@ -52,7 +52,7 @@ class BlazorWebView : WebView
 
             Dispatcher.InvokeAsync(async () =>
             {
-                await AddRootComponentAsync(typeof(Counter), "#app", ParameterView.Empty);
+                await AddRootComponentAsync(rootComponent, "#app", ParameterView.Empty);
             });
 
             var script = webkit_user_script_new(
@@ -159,40 +159,40 @@ class BlazorWebView : WebView
         }
     }
 
-    public BlazorWebView()
+    public BlazorWebView(Type rootComponent)
         : base ()
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
-    public BlazorWebView(nint raw)
+    public BlazorWebView(nint raw, Type rootComponent)
         : base (raw)
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
-    public BlazorWebView(WebContext context)
+    public BlazorWebView(WebContext context, Type rootComponent)
         : base (context)
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
-    public BlazorWebView(WebView web_view)
+    public BlazorWebView(WebView web_view, Type rootComponent)
         : base (web_view)
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
-    public BlazorWebView(Settings settings)
+    public BlazorWebView(Settings settings, Type rootComponent)
         : base (settings)
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
-    public BlazorWebView(UserContentManager user_content_manager)
+    public BlazorWebView(UserContentManager user_content_manager, Type rootComponent)
         : base (user_content_manager)
     {
-        _manager = new WebViewManager(this);
+        _manager = new WebViewManager(this, rootComponent);
     }
 
     readonly WebViewManager _manager;
