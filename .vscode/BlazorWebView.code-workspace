@@ -1,0 +1,20 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		},
+		{
+			"path": "../BlazorWebKit"
+		},
+		{
+			"path": "../BlazorWebKit.Test"
+		}
+	],
+	"settings": { 
+		"files.exclude": {
+			"**/bin": true,
+			"**/obj": true
+		},
+		"editor.fontSize": 12
+	}
+}
