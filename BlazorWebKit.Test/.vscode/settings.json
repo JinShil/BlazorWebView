@@ -1,5 +1,5 @@
 {
-    "projectName": "BlazorWebkit",
+    "projectName": "BlazorWebKit.Test",
     "targetMachine": "192.168.0.12",
     "targetDir": "debug/",
     "editor.fontSize": 12

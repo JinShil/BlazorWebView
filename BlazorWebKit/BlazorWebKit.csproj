@@ -7,12 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Update="wwwroot/index.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-
-    <ItemGroup>
         <PackageReference Include="GtkSharp" Version="3.24.24.38" />
         <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.0" />
         <PackageReference Include="WebkitGtkSharp" Version="3.24.24.38" />
