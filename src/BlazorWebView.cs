@@ -52,7 +52,7 @@ class BlazorWebView : WebView
 
             Dispatcher.InvokeAsync(async () =>
             {
-                await AddRootComponentAsync(typeof(BlazorWebkit.Counter), "#app", ParameterView.Empty);
+                await AddRootComponentAsync(typeof(Counter), "#app", ParameterView.Empty);
             });
 
             var script = webkit_user_script_new(
