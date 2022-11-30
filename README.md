@@ -10,11 +10,11 @@ BlazorWebView uses some of the same code as [Steve Sanderson's WebWindow](https:
 ## Usage
 ```
 git clone https://github.com/JinShil/BlazorWebView.git
-cd BlazorWebView/src
+cd BlazorWebView/BlazorWebKit.Test
 dotnet run
 ```
 
 ## Status
-This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  In the [src/.vscode](https://github.com/JinShil/BlazorWebView/tree/main/src/.vscode) directory the necessary configuration to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC can be found.
+This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  In the [BlazorWebKit.Test/.vscode](https://github.com/JinShil/BlazorWebView/tree/main/BlazorWebKit.Test/.vscode) directory the necessary configuration to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC can be found.
 
-This project has only been tested using the most basic [Counter](https://github.com/JinShil/BlazorWebView/blob/main/src/Counter.razor) component, so it only serves as a working proof of concept at this time.
+This project has only been tested using the most basic [Counter](https://github.com/JinShil/BlazorWebView/blob/main/BlazorWebKit.Test/Counter.razor) component, so it only serves as a working proof of concept at this time.
