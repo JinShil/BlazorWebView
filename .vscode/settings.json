@@ -1,0 +1,6 @@
+{
+    "files.exclude": {
+        "**/BlazorWebKit": true,
+        "**/BlazorWebKit.Test": true
+    },
+}
