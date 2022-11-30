@@ -1,5 +1,5 @@
 ﻿using Gtk;
-using BlazorWebkit;
+using BlazorWebView;
         
 Application.Init();
 
@@ -12,7 +12,7 @@ window.DeleteEvent += (o, e) =>
     Application.Quit();
 };
 
-var webView = new BlazorWebView();
+var webView = new BlazorWebView.BlazorWebView();
 window.Add(webView);
 
 window.ShowAll();

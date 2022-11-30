@@ -5,10 +5,11 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Components;
 using System.Web;
 using System.Reflection;
-using static BlazorWebkit.Gtk;
-using static BlazorWebkit.WebKit;
 
-namespace BlazorWebkit;
+namespace BlazorWebView;
+
+using static Gtk;
+using static WebKit;
 
 class BlazorWebView : WebView
 {

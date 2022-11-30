@@ -1,7 +1,7 @@
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-namespace BlazorWebkit;
+namespace BlazorWebView;
 
 internal static class DllImportResolver
 {
