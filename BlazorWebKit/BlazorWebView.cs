@@ -51,8 +51,6 @@ public class BlazorWebView : WebView
             HandleWebMessageDelegate = HandleWebMessage;
             DestroyNotifyDelegate = g_free;
 
-            WebView.Settings.EnableDeveloperExtras = true;
-
             // This is necessary to automatically serve the files in the `_framework` virtual folder.
             // Using `file://` will cause the webview to look for the `_framework` files on the file system,
             // and it won't find them.

@@ -18,6 +18,9 @@ window.DeleteEvent += (o, e) =>
 var webView = new BlazorWebView("wwwroot/index.html", typeof(App));
 window.Add(webView);
 
+// Allow opening developer tools
+webView.Settings.EnableDeveloperExtras = true;
+
 window.ShowAll();
 
 Application.Run();
