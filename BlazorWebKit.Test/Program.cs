@@ -27,12 +27,12 @@ var serviceProvider = new ServiceCollection()
     {
         lb.AddSimpleConsole(options =>
         {
-            options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
-            options.IncludeScopes = false;
+            //options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
+            //options.IncludeScopes = false;
             //options.SingleLine = true;
             options.TimestampFormat = "hh:mm:ss ";
         })
-        .SetMinimumLevel(LogLevel.Trace);
+        .SetMinimumLevel(LogLevel.Information);
     })
     .BuildServiceProvider();
 var webView = new BlazorWebView(serviceProvider);

@@ -105,7 +105,7 @@ public class BlazorWebView : WebView
                 uri += _relativeHostPath;
             }
 
-            _logger?.LogTrace($"Fetching \"{uri}\"");
+            _logger?.LogInformation($"Fetching \"{uri}\"");
 
             if (TryGetResponseContent(uri, false, out int statusCode, out string statusMessage, out Stream content, out IDictionary<string, string> headers))
             {
@@ -134,7 +134,7 @@ public class BlazorWebView : WebView
                 var s = Marshal.PtrToStringAuto(p);
                 if (s is not null)
                 {
-                    _logger?.LogTrace($"Received message `{s}`");
+                    _logger?.LogDebug($"Received message `{s}`");
 
                     try
                     {
@@ -152,14 +152,14 @@ public class BlazorWebView : WebView
 
         protected override void NavigateCore(Uri absoluteUri)
         {
-            _logger?.LogTrace($"Navigating to \"{absoluteUri}\"");
+            _logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
 
             WebView.LoadUri(absoluteUri.ToString());
         }
 
         protected override void SendMessage(string message)
         {
-            _logger?.LogTrace($"Dispatching `{message}`");
+            _logger?.LogDebug($"Dispatching `{message}`");
 
             var script = $"__dispatchMessageCallback(\"{HttpUtility.JavaScriptStringEncode(message)}\")";
 
