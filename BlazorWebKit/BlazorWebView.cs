@@ -22,7 +22,6 @@ public class BlazorWebView : WebView
         }
 
         delegate void void_nint_nint_nint(nint arg0, nint arg1, nint arg2);
-        delegate void void_nint(nint arg0);
 
         const string _scheme = "app";
         readonly static Uri _baseUri = new Uri($"{_scheme}://localhost/");
@@ -40,7 +39,6 @@ public class BlazorWebView : WebView
 
             WebView = webView;
             HandleWebMessageDelegate = HandleWebMessage;
-            DestroyNotifyDelegate = g_free;
 
             // This is necessary to automatically serve the files in the `_framework` virtual folder.
             // Using `file://` will cause the webview to look for the `_framework` files on the file system,
@@ -87,7 +85,6 @@ public class BlazorWebView : WebView
 
         public WebView WebView { get; init; }
         readonly void_nint_nint_nint HandleWebMessageDelegate;
-        readonly void_nint DestroyNotifyDelegate;
         readonly string _relativeHostPath;
         readonly Type _rootComponent;
         readonly ILogger<BlazorWebView>? _logger;
@@ -113,7 +110,7 @@ public class BlazorWebView : WebView
                 {
                     content.CopyTo(ms);
 
-                    var streamPtr = g_memory_input_stream_new_from_data(ms.GetBuffer(), (uint)ms.Length, Marshal.GetFunctionPointerForDelegate(DestroyNotifyDelegate));
+                    var streamPtr = g_memory_input_stream_new_from_data(ms.GetBuffer(), (uint)ms.Length, nint.Zero);
                     var inputStream = new GLib.InputStream(streamPtr);
                     request.Finish(inputStream, ms.Length, headers["Content-Type"]);
                 }
