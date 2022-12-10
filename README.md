@@ -2,7 +2,7 @@
 A [WebKitGtkSharp](https://github.com/GtkSharp/GtkSharp) WebView for running [Blazor Hybrid](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/) applications without the need to compile a native library.
 
 ## Why?
-Microsoft had decided to not support Maui on Linux, so there is currently no way to implement Blazor Hybrid apps on Linux.
+Microsoft has decided to not support Maui on Linux, so there is currently no way to create Blazor Hybrid apps on Linux using *only* C#.
 
 GtkSharp's WebKit implementation is currently [incomplete](https://github.com/GtkSharp/GtkSharp/pull/274).  I don't understand how GtkSharp's codegen works, and GtkSharp doesn't to seem to get much frequent attention from its developers. It'd probably be best to move [GTKSharp's PR #274](https://github.com/GtkSharp/GtkSharp/pull/274) along, but this project provides a working alternative and a proof of concept until then.
 
