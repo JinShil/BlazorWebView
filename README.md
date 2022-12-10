@@ -2,6 +2,8 @@
 A [WebKitGtkSharp](https://github.com/GtkSharp/GtkSharp) WebView for running [Blazor Hybrid](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/) applications without the need to compile a native library.
 
 ## Why?
+Microsoft had decided to not support Maui on Linux, so there is currently no way to implement Blazor Hybrid apps on Linux.
+
 GtkSharp's WebKit implementation is currently [incomplete](https://github.com/GtkSharp/GtkSharp/pull/274).  I don't understand how GtkSharp's codegen works, and GtkSharp doesn't to seem to get much frequent attention from its developers. It'd probably be best to move [GTKSharp's PR #274](https://github.com/GtkSharp/GtkSharp/pull/274) along, but this project provides a working alternative and a proof of concept until then.
 
 ## How?
@@ -19,5 +21,3 @@ See the project in [BlazorWebKit.Test](https://github.com/JinShil/BlazorWebView/
 
 ## Status
 This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  In the [BlazorWebKit.Test/.vscode](https://github.com/JinShil/BlazorWebView/tree/main/BlazorWebKit.Test/.vscode) directory the necessary configuration to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC can be found.
-
-This project has only been tested using the most basic [Counter](https://github.com/JinShil/BlazorWebView/blob/main/BlazorWebKit.Test/Components/Counter.razor) component, so it only serves as a working proof of concept at this time.
