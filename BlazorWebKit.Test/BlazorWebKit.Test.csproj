@@ -1,24 +1,26 @@
-<Project Sdk="Microsoft.NET.Sdk.Razor">
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
-    <PropertyGroup>
-        <OutputType>Exe</OutputType>
-        <TargetFramework>net7.0</TargetFramework>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net7.0</TargetFramework>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="GtkSharp" Version="3.24.24.38" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.0" />
-        <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.0" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GirCore.Adw-1" Version="0.4.0" />
+		<PackageReference Include="GirCore.Gtk-4.0" Version="0.4.0" />
+		<PackageReference Include="GirCore.WebKit-6.0" Version="0.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.*" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="7.0.*" />
+	</ItemGroup>
 
-    <ItemGroup>
-      <ProjectReference Include="..\BlazorWebKit\BlazorWebKit.csproj" />
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\BlazorWebKit\BlazorWebKit.csproj" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <Content Update="wwwroot/index.html">
-            <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
+	<ItemGroup>
+		<Content Update="wwwroot/index.html">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
 </Project>
