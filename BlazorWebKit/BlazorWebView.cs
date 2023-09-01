@@ -108,7 +108,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 			uri += _relativeHostPath;
 		}
 
-		_logger?.LogInformation($"Fetching \"{uri}\"");
+		_logger?.LogDebug($"Fetching \"{uri}\"");
 
 		if (TryGetResponseContent(uri, false, out var statusCode, out var statusMessage, out var content, out var headers))
 		{
@@ -126,7 +126,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 
 	protected override void NavigateCore(Uri absoluteUri)
 	{
-		_logger?.LogInformation($"Navigating to \"{absoluteUri}\"");
+		_logger?.LogDebug($"Navigating to \"{absoluteUri}\"");
 		WebView.LoadUri(absoluteUri.ToString());
 	}
 

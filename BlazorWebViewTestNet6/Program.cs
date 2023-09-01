@@ -29,7 +29,7 @@ application.OnActivate += (sender, args) =>
 				//options.SingleLine = true;
 				options.TimestampFormat = "hh:mm:ss ";
 			})
-			.SetMinimumLevel(LogLevel.Debug);
+			.SetMinimumLevel(LogLevel.Information);
 		})
 		.BuildServiceProvider();
 	var webView = new BlazorWebView(serviceProvider);
