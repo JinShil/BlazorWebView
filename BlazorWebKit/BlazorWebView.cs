@@ -79,7 +79,6 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		UserContentManager.ScriptMessageReceivedSignal.Connect(ucm, (_, signalArgs) =>
 		{
 			var result = signalArgs.Value;
-			Console.WriteLine(result.ToString());
 			MessageReceived(BaseUri, result.ToString());
 		}, true, "webview");
 
