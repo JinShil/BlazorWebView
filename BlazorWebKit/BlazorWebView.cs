@@ -52,8 +52,11 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		//// This is necessary to automatically serve the files in the `_framework` virtual folder.
 		//// Using `file://` will cause the webview to look for the `_framework` files on the file system,
 		//// and it won't find them.
-
-		_webView.WebContext?.RegisterUriScheme(Scheme, HandleUriScheme);
+		if (_webView.WebContext is null)
+		{
+			throw new Exception("WebView.WebContext is null");
+		}
+		_webView.WebContext.RegisterUriScheme(Scheme, HandleUriScheme);
 
 		Dispatcher.InvokeAsync(async () =>
 		{
