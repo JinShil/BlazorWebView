@@ -24,6 +24,13 @@ public class BlazorWebView : WebView
 [UnsupportedOSPlatform("Windows")]
 class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
+	// Workaround for protection level access
+	class InputStream : Gio.InputStream
+	{
+		protected internal InputStream(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef)
+		{ }
+	}
+
 	const string Scheme = "app";
 	static readonly Uri BaseUri = new($"{Scheme}://localhost/");
 
