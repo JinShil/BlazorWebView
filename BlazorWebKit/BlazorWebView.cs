@@ -1,9 +1,8 @@
-#pragma warning disable CA1416
-
 using Microsoft.AspNetCore.Components;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using System.Runtime.Versioning;
 using System.Web;
 using WebKit;
 using MemoryInputStream = Gio.Internal.MemoryInputStream;
@@ -11,6 +10,8 @@ using Uri = System.Uri;
 
 namespace BlazorWebKit;
 
+[UnsupportedOSPlatform("OSX")]
+[UnsupportedOSPlatform("Windows")]
 public class BlazorWebView : WebView
 {
 	public BlazorWebView(IServiceProvider serviceProvider)
@@ -19,6 +20,8 @@ public class BlazorWebView : WebView
 	}
 }
 
+[UnsupportedOSPlatform("OSX")]
+[UnsupportedOSPlatform("Windows")]
 class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
 	const string Scheme = "app";
