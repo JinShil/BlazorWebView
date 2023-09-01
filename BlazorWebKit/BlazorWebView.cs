@@ -47,13 +47,13 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		var rootComponent = options.RootComponent;
 		_logger = serviceProvider.GetService<ILogger<WebViewManager>>();
 
-		WebView = webView;
+		_webView = webView;
 
 		//// This is necessary to automatically serve the files in the `_framework` virtual folder.
 		//// Using `file://` will cause the webview to look for the `_framework` files on the file system,
 		//// and it won't find them.
 
-		WebView.WebContext?.RegisterUriScheme(Scheme, HandleUriScheme);
+		_webView.WebContext?.RegisterUriScheme(Scheme, HandleUriScheme);
 
 		Dispatcher.InvokeAsync(async () =>
 		{
@@ -97,7 +97,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		Navigate("/");
 	}
 
-	public WebView WebView { get; init; }
+	readonly WebView _webView;
 	readonly string _relativeHostPath;
 	readonly ILogger<WebViewManager>? _logger;
 
@@ -133,13 +133,13 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 	protected override void NavigateCore(Uri absoluteUri)
 	{
 		_logger?.LogDebug($"Navigating to \"{absoluteUri}\"");
-		WebView.LoadUri(absoluteUri.ToString());
+		_webView.LoadUri(absoluteUri.ToString());
 	}
 
 	protected override async void SendMessage(string message)
 	{
 		var script = $"__dispatchMessageCallback(\"{HttpUtility.JavaScriptStringEncode(message)}\")";
 		_logger?.LogDebug($"Dispatching `{script}`");
-		_ = await WebView.EvaluateJavascriptAsync(script);
+		_ = await _webView.EvaluateJavascriptAsync(script);
 	}
 }
