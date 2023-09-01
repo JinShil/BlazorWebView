@@ -84,7 +84,9 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		}, true, "webview");
 
 		if (!ucm.RegisterScriptMessageHandler("webview", null))
+		{
 			throw new Exception("Could not register script message handler");
+		}
 
 		Navigate("/");
 	}
