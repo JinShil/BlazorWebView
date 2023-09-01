@@ -1,14 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
-    <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFrameworks>net6.0;net7.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<LangVersion>11</LangVersion>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="GtkSharp" Version="3.24.24.38" />
-        <PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.0" />
-        <PackageReference Include="WebkitGtkSharp" Version="3.24.24.38" />
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="GirCore.Gtk-4.0" Version="0.4.0" />
+		<PackageReference Include="GirCore.WebKit-6.0" Version="0.4.0" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="6.0.*" Condition="'$(TargetFramework)' == 'net6.0'" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="7.0.*" Condition="'$(TargetFramework)' == 'net7.0'" />
+	</ItemGroup>
+
 </Project>

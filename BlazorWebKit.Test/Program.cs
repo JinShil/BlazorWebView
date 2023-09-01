@@ -1,46 +1,43 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Gtk;
+﻿#pragma warning disable CA1416
+
 using BlazorWebKit;
-using BlazorWebKit.Test;
-        
-Application.Init();
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
-// Create the parent window
-var window = new Window(WindowType.Toplevel);
-window.DefaultSize = new Gdk.Size(1024, 768);
-// window.Fullscreen();
+WebKit.Module.Initialize();
 
-window.DeleteEvent += (o, e) =>
+var application = Adw.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
+
+application.OnActivate += (sender, args) =>
 {
-    Application.Quit();
+	var window = Gtk.ApplicationWindow.New((Adw.Application)sender);
+	window.Title = "Blazor";
+	window.SetDefaultSize(800, 600);
+
+	// Add the BlazorWebView
+	var serviceProvider = new ServiceCollection()
+		.AddBlazorWebViewOptions(new BlazorWebViewOptions()
+		{
+			RootComponent = typeof(BlazorWebKit.Test.App),
+			HostPath = "wwwroot/index.html"
+		})
+		.AddLogging((lb) =>
+		{
+			lb.AddSimpleConsole(options =>
+				{
+					//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
+					//options.IncludeScopes = false;
+					//options.SingleLine = true;
+					options.TimestampFormat = "hh:mm:ss ";
+				})
+				.SetMinimumLevel(LogLevel.Debug);
+		})
+		.BuildServiceProvider();
+	var webView = new BlazorWebView(serviceProvider);
+	window.SetChild(webView);
+	window.Show();
+	// Allow opening developer tools
+	webView.GetSettings().EnableDeveloperExtras = true;
 };
 
-// Add the BlazorWebView
-var serviceProvider = new ServiceCollection()
-    .AddBlazorWebViewOptions(new BlazorWebViewOptions() 
-    { 
-        RootComponent = typeof(App),
-        HostPath = "wwwroot/index.html"
-    })
-    .AddLogging((lb) =>
-    {
-        lb.AddSimpleConsole(options =>
-        {
-            //options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
-            //options.IncludeScopes = false;
-            //options.SingleLine = true;
-            options.TimestampFormat = "hh:mm:ss ";
-        })
-        .SetMinimumLevel(LogLevel.Information);
-    })
-    .BuildServiceProvider();
-var webView = new BlazorWebView(serviceProvider);
-window.Add(webView);
-
-// Allow opening developer tools
-webView.Settings.EnableDeveloperExtras = true;
-
-window.ShowAll();
-
-Application.Run();
+return application.Run();
