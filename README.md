@@ -1,5 +1,5 @@
 # BlazorWebView
-A [WebKitGTK](https://webkitgtk.org/) WebView, utilizing [Gir.Core](https://gircore.github.io/), for running [Blazor Hybrid](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/) applications on Linux without the need to compile a native library.
+A [WebKitGTK](https://webkitgtk.org/) WebView, utilizing [Gir.Core](https://gircore.github.io/), for running [Blazor Hybrid](https://learn.microsoft.com/en-us/aspnet/core/blazor/hybrid/) applications on Linux without the need to compile a native library.  It is analagous to the [Winforms BlazorWebView](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.webview.windowsforms.blazorwebview) or the [WPF BlazorWebView](https://learn.microsoft.com/en-us/dotnet/api/microsoft.aspnetcore.components.webview.wpf), but for Linux instead of Windows.
 
 Blazor Hybrid apps allow one to create Blazor desktop applications that uses the local machine's .NET runtime (not Blazor WASM), has full access to local resources (not sandboxed), and does not require hosting through a web server (e.g. Blazor server). It is just like any other desktop application written in C#, but uses Blazor and web technologies to implement the user interface.
 
