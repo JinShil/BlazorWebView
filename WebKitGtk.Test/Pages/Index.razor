@@ -1,0 +1,18 @@
+@page "/"
+
+@using WebKitGtk.Test.Components
+@using System.Diagnostics
+
+<Counter />
+
+<p>Application took @StartupTime ms to start</p>
+
+@code {
+    string StartupTime
+    {
+        get
+        {
+            return (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalMilliseconds.ToString("#,0");
+        }
+    }
+}

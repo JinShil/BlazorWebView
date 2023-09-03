@@ -1,6 +1,6 @@
 using Microsoft.Extensions.DependencyInjection;
 
-namespace BlazorWebKit;
+namespace WebKitGtk;
 
 public static class ServiceCollectionExtensions
 {

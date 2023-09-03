@@ -1,6 +1,9 @@
 {
+    "projectName": "WebKitGtk.Test",
+    "targetMachine": "192.168.0.14",
+    "targetDir": "debug/",
     "files.exclude": {
-        "**/BlazorWebKit": true,
-        "**/BlazorWebKit.Test": true
-    },
+        "**/bin": true,
+        "**/obj": true
+    }
 }

@@ -10,17 +10,12 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/bin/Debug/net7.0/${config:projectName}.dll",
+            "program": "${workspaceFolder}/${config:projectName}/bin/Debug/net7.0/${config:projectName}.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/bin/Debug/net7.0/",
+            "cwd": "${workspaceFolder}/${config:projectName}/bin/Debug/net7.0/",
             // For more information about the 'console' field, see https://aka.ms/VSCode-CS-LaunchJson-Console
             "console": "internalConsole",
             "stopAtEntry": false
-        },
-        {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
         },
         {
             // For this to work you need to install your public key on the remote machine so it will
