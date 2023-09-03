@@ -5,14 +5,14 @@
 
 <Counter />
 
-<p>@StartupTime</p>
+<p>Application took @StartupTime ms to start</p>
 
 @code {
     string StartupTime
     {
         get
         {
-            return (Process.GetCurrentProcess().StartTime - DateTime.Now).ToString() + "x";
+            return (DateTime.Now - Process.GetCurrentProcess().StartTime).TotalMilliseconds.ToString("#,0");
         }
     }
 }
