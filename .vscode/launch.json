@@ -18,11 +18,6 @@
             "stopAtEntry": false
         },
         {
-            "name": ".NET Core Attach",
-            "type": "coreclr",
-            "request": "attach"
-        },
-        {
             // For this to work you need to install your public key on the remote machine so it will
             // not require a password.  Also you need to install vsdbg on the remote machine:
             // $ wget https://aka.ms/getvsdbgsh
