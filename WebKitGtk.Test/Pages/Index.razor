@@ -1,0 +1,18 @@
+@page "/"
+
+@using WebKitGtk.Test.Components
+@using System.Diagnostics
+
+<Counter />
+
+<p>@StartupTime</p>
+
+@code {
+    string StartupTime
+    {
+        get
+        {
+            return (Process.GetCurrentProcess().StartTime - DateTime.Now).ToString() + "x";
+        }
+    }
+}

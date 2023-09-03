@@ -16,7 +16,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\BlazorWebKit\BlazorWebKit.csproj" />
+		<ProjectReference Include="..\WebKitGtk\WebKitGtk.csproj" />
 	</ItemGroup>
 
 	<ItemGroup>

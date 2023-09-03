@@ -1,4 +1,4 @@
-﻿using BlazorWebKit;
+﻿using WebKitGtk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System.Runtime.Versioning;
