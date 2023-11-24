@@ -8,6 +8,6 @@ public static class ServiceCollectionExtensions
     {
         return services
             .AddBlazorWebView()
-            .AddSingleton<BlazorWebViewOptions>(options);
+            .AddSingleton(options);
     }
 }
