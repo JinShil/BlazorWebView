@@ -5,7 +5,7 @@ using System.Runtime.Versioning;
 
 [UnsupportedOSPlatform("OSX")]
 [UnsupportedOSPlatform("Windows")]
-internal partial class Program
+internal class Program
 {
 	private static int Main(string[] args)
 	{
