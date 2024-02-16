@@ -14,7 +14,7 @@ BlazorWebView uses some of the same code as [Steve Sanderson's WebWindow](https:
 ### Using a Linux terminal
 ```
 git clone https://github.com/JinShil/BlazorWebView.git
-cd WebKitGtk/WebKitGtk.Test
+cd BlazorWebView/WebKitGtk.Test
 dotnet run
 ```
 
