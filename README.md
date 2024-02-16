@@ -25,6 +25,8 @@ On a Linux computer, simply open this repository in Visual Studio Code and press
 See the project in [WebKitGtk.Test](https://github.com/JinShil/BlazorWebView/tree/main/WebKitGtk.Test) for an example illustrating how to create a Blazor Hybrid application using the BlazorWebView.
 
 ## Status
-This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.  
+This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.
+
+Note that on the latest Raspberry Pi Bookworm OS, you will likely encounter https://github.com/raspberrypi/linux/issues/5750.  You can work around the issue by adding `webView.GetSettings().SetHardwareAccelerationPolicy(WebKit.HardwareAccelerationPolicy.Never);`.
 
 The root .vscode directory has the necessary configuration files to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC.
