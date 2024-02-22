@@ -24,6 +24,10 @@ On a Linux computer, simply open this repository in Visual Studio Code and press
 ## Usage
 See the project in [WebKitGtk.Test](https://github.com/JinShil/BlazorWebView/tree/main/WebKitGtk.Test) for an example illustrating how to create a Blazor Hybrid application using the BlazorWebView.
 
+You may need to install the following packages:
+* libadwaita-1-0
+* libwebkitgtk-6.0-4
+
 ## Status
 This poject was tested on Windows Subsystem for Linux, Raspberry Pi Bullseye 64-bit, and Debian Bullseye 64-bit.
 
