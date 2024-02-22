@@ -73,7 +73,7 @@
             "type": "shell",
             "args": [
                 "-c",
-                "rsync -ruv --delete bin/Debug/net8.0/linux-arm64/publish/* pi@${config:targetMachine}:${config:targetDir}"
+                "rsync -ruv --delete ${workspaceFolder}/${config:projectName}/bin/Debug/net8.0/linux-arm64/publish/* pi@${config:targetMachine}:${config:targetDir}"
             ],
             "problemMatcher": []
         },

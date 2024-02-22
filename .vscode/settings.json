@@ -1,6 +1,6 @@
 {
     "projectName": "WebKitGtk.Test",
-    "targetMachine": "192.168.0.14",
+    "targetMachine": "192.168.0.21",
     "targetDir": "debug/",
     "files.exclude": {
         "**/bin": true,
