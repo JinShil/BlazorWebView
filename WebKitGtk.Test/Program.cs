@@ -56,7 +56,7 @@ internal class Program
 				webView.GetSettings().EnableDeveloperExtras = true;
 			};
 
-			return application.Run();
+			return application.Run(0, []);
 		}
 		finally
 		{
