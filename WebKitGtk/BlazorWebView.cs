@@ -83,7 +83,9 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 				};
 			""",
 			injectedFrames: UserContentInjectedFrames.AllFrames,
-			injectionTime: UserScriptInjectionTime.Start)
+			injectionTime: UserScriptInjectionTime.Start,
+			null,
+			null)
 		);
 
 		UserContentManager.ScriptMessageReceivedSignal.Connect(ucm, (_, signalArgs) =>

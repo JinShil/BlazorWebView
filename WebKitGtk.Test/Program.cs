@@ -1,7 +1,11 @@
 ﻿using WebKitGtk;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Hosting;
 using System.Runtime.Versioning;
+using WebKitGtk.Test.Data;
+using System.Threading.Tasks;
+using System.Security.Cryptography.X509Certificates;
 
 [UnsupportedOSPlatform("OSX")]
 [UnsupportedOSPlatform("Windows")]
@@ -9,42 +13,54 @@ internal class Program
 {
 	private static int Main(string[] args)
 	{
-		WebKit.Module.Initialize();
+		var appBuilder = Host.CreateApplicationBuilder(args);
+		//appBuilder.Logging.AddDebug();
+		appBuilder.Logging.AddSimpleConsole(
+			options => {
+				options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
+				options.IncludeScopes = false;
+				options.SingleLine = true;
+				options.TimestampFormat = "hh:mm:ss ";
+		})
+		.SetMinimumLevel(LogLevel.Information);
 
-		var application = Adw.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
+		appBuilder.Services.AddBlazorWebViewOptions(
+			new BlazorWebViewOptions()
+			{
+				RootComponent = typeof(WebKitGtk.Test.App),
+				HostPath = "wwwroot/index.html"
+			}
+		)
+		.AddSingleton<WeatherForecastService>();
 
-		application.OnActivate += (sender, args) =>
+		using var myApp = appBuilder.Build();
+
+		myApp.Start();
+
+		try
 		{
-			var window = Gtk.ApplicationWindow.New((Adw.Application)sender);
-			window.Title = "Blazor";
-			window.SetDefaultSize(800, 600);
+			WebKit.Module.Initialize();
 
-			// Add the BlazorWebView
-			var serviceProvider = new ServiceCollection()
-				.AddBlazorWebViewOptions(new BlazorWebViewOptions()
-				{
-					RootComponent = typeof(WebKitGtk.Test.App),
-					HostPath = "wwwroot/index.html"
-				})
-				.AddLogging((lb) =>
-				{
-					lb.AddSimpleConsole(options =>
-						{
-							//options.ColorBehavior = Microsoft.Extensions.Logging.Console.LoggerColorBehavior.Disabled;
-							//options.IncludeScopes = false;
-							//options.SingleLine = true;
-							options.TimestampFormat = "hh:mm:ss ";
-						})
-						.SetMinimumLevel(LogLevel.Information);
-				})
-				.BuildServiceProvider();
-			var webView = new BlazorWebView(serviceProvider);
-			window.SetChild(webView);
-			window.Show();
-			// Allow opening developer tools
-			webView.GetSettings().EnableDeveloperExtras = true;
-		};
+			var application = Adw.Application.New("org.gir.core", Gio.ApplicationFlags.FlagsNone);
 
-		return application.Run();
+			application.OnActivate += (sender, args) =>
+			{
+				var window = Gtk.ApplicationWindow.New((Adw.Application)sender);
+				window.Title = "Blazor";
+				window.SetDefaultSize(800, 600);
+
+				var webView = new BlazorWebView(myApp.Services);
+				window.SetChild(webView);
+				window.Show();
+				// Allow opening developer tools
+				webView.GetSettings().EnableDeveloperExtras = true;
+			};
+
+			return application.Run(0, []);
+		}
+		finally
+		{
+			Task.Run(async () => await myApp.StopAsync()).GetAwaiter().GetResult();
+		}
 	}
 }
