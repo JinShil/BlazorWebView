@@ -58,6 +58,4 @@ This project was tested on:
 - Debian Bullseye 64-bit.
 - Ubuntu 24.04 LTS desktop amd64
 
-Note that on the latest Raspberry Pi Bookworm OS, you will likely encounter https://github.com/raspberrypi/linux/issues/5750.  You can work around the issue by adding `webView.GetSettings().SetHardwareAccelerationPolicy(WebKit.HardwareAccelerationPolicy.Never);`.
-
 The root .vscode directory has the necessary configuration files to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC.
