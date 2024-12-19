@@ -29,20 +29,19 @@ Running the demo project may fail with the following error on ubuntu 24.04:
 
     bwrap: setting up uid map: Permission denied
 
-This is due to Ubuntu developers deciding to use Apparmor to restrict the creation of user namespaces. To resolve this create a file named `/etc/apparmor.d/bwrap` with the following contents:
+This is due to the Ubuntu developers' decision to use AppArmor to restrict the creation of user namespaces. Below are the steps for applying a new AppArmor profile to enable user namespace restriction:
 
-    abi <abi/4.0>,
-    include <tunables/global>
+```sh
+# Download the new profile:
 
-    profile bwrap /usr/bin/bwrap flags=(unconfined) {
-      userns,
+sudo wget -O /etc/apparmor.d/bwrap-userns-restrict "https://gitlab.com/apparmor/apparmor/-/raw/master/profiles/apparmor/profiles/extras/bwrap-userns-restrict?ref_type=heads&inline=false"
 
-      # Site-specific additions and overrides. See local/README for details.
-      include if exists <local/bwrap>
-    }
+# Load the new profile into AppArmor:
+sudo apparmor_parser -r /etc/apparmor.d/bwrap-userns-restrict
 
-Followed by a reboot. 
-(Note: this fix was found [here](https://etbe.coker.com.au/2024/04/24/ubuntu-24-04-bubblewrap/))
+# Restart the AppArmor service:
+sudo systemctl restart apparmor
+```
 
 ## Usage
 See the project in [WebKitGtk.Test](https://github.com/JinShil/BlazorWebView/tree/main/WebKitGtk.Test) for an example illustrating how to create a Blazor Hybrid application using the BlazorWebView.
@@ -53,7 +52,7 @@ You may need to install the following packages:
 
 ## Status
 This project was tested on:
-- Windows Subsystem for Linux
+- Windows Subsystem for Linux. Detailed setup instructions are available [here](./WSL2.md).
 - Raspberry Pi Bullseye 64-bit
 - Debian Bullseye 64-bit.
 - Ubuntu 24.04 LTS desktop amd64
