@@ -10,7 +10,7 @@ Microsoft has decided to not support Maui on Linux, so there is currently no way
 BlazorWebView uses some of the same code as [Steve Sanderson's WebWindow](https://github.com/SteveSandersonMS/WebWindow) and leverages [Microsoft's WebView infrastructure](https://github.com/dotnet/aspnetcore/tree/main/src/Components/WebView) to get Blazor Hybrid working.  However, it differs from WebWindow in that it doesn't require one to compile a native shared library in C++, instead utilizing [Gir.Core](https://gircore.github.io/) to call into the native libraries.   This has the benefit that, as long as the native libraries are installed on the Linux system, one only needs to use the `dotnet` CLI to build and run BlazorWebView.
 
 ## Screenshot
-<img src="./Screens/screenshot.png" width="75%" height="75%">
+![Screenshot](./Screens/screenshot.png "Screenshot")
 
 ## Demonstration
 
