@@ -58,3 +58,7 @@ This project was tested on:
 - Ubuntu 24.04 LTS desktop amd64
 
 The root .vscode directory has the necessary configuration files to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC.
+
+## Nuget Package
+
+For a Nuget package derived from this project, See [WebKit.BlazorWebView.GirCore](https://www.nuget.org/packages/WebKit.BlazorWebView.GirCore/).
