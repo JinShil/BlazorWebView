@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System.Runtime.Versioning;
 using System.Web;
+using GLib.Internal;
 using WebKit;
 using MemoryInputStream = Gio.Internal.MemoryInputStream;
 using Uri = System.Uri;
@@ -24,13 +25,6 @@ public class BlazorWebView : WebView
 [UnsupportedOSPlatform("Windows")]
 class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
-	// Workaround for protection level access
-	class InputStream : Gio.InputStream
-	{
-		protected internal InputStream(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef)
-		{ }
-	}
-
 	const string Scheme = "app";
 	static readonly Uri BaseUri = new($"{Scheme}://localhost/");
 
@@ -84,8 +78,10 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 			""",
 			injectedFrames: UserContentInjectedFrames.AllFrames,
 			injectionTime: UserScriptInjectionTime.Start,
-			null,
-			null)
+			(string[]?)null
+			,
+			(string[]?)null
+			)
 		);
 
 		UserContentManager.ScriptMessageReceivedSignal.Connect(ucm, (_, signalArgs) =>
@@ -125,14 +121,17 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		{
 			using var ms = new MemoryStream();
 			content.CopyTo(ms);
-			var streamPtr = MemoryInputStream.NewFromData(ref ms.GetBuffer()[0], (uint)ms.Length, _ => { });
-			var inputStream = new InputStream(streamPtr, false);
-			request.Finish(inputStream, ms.Length, headers["Content-Type"]);
+			byte[] data = ms.ToArray();
+			using var bytes = GLib.Bytes.New(data);
+			var memoryInputStream = Gio.MemoryInputStream.NewFromBytes(bytes);
+
+			request.Finish(memoryInputStream, data.LongLength, headers["Content-Type"]);
 		}
 		else
 		{
 			throw new Exception($"Failed to serve \"{uri}\". {statusCode} - {statusMessage}");
 		}
+
 	}
 
 	protected override void NavigateCore(Uri absoluteUri)

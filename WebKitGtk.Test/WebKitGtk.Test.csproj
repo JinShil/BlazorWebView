@@ -2,17 +2,17 @@
 
 	<PropertyGroup>
 		<OutputType>Exe</OutputType>
-		<TargetFramework>net8.0</TargetFramework>
+		<TargetFramework>net9.0</TargetFramework>
 		<Nullable>enable</Nullable>
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="GirCore.Adw-1" Version="0.5.0" />
-		<PackageReference Include="GirCore.Gtk-4.0" Version="0.5.0" />
-		<PackageReference Include="GirCore.WebKit-6.0" Version="0.5.0" />
-		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="8.0.*" />
-		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="8.0.*" />
-	    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+		<PackageReference Include="GirCore.Adw-1" Version="0.6.3" />
+		<PackageReference Include="GirCore.Gtk-4.0" Version="0.6.3" />
+		<PackageReference Include="GirCore.WebKit-6.0" Version="0.6.3" />
+		<PackageReference Include="Microsoft.AspNetCore.Components.WebView" Version="9.0.8" />
+		<PackageReference Include="Microsoft.Extensions.Logging.Console" Version="9.0.8" />
+	    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.8" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -25,3 +25,12 @@
 		</Content>
 	</ItemGroup>
 </Project>
+
+                                                                                                                                                                                                                                                                                                          │
+- Upgrade target framework from net8.0 to net9.0│
+- Update GirCore packages to version 0.6.3 (Adw, Gtk-4.0, WebKit-6.0)│
+- Update Microsoft packages to version 9.0.8 (Components.WebView, Extensions.Logging.Console, Extensions.Hosting)│
+- Fix MemoryInputStream creation using GLib.Bytes.New instead of deprecated NewFromData method│
+- Remove custom InputStream workaround class, no longer needed with updated GirCore
+- Add missing GLib.Internal using statement│
+- Improve null safety with explicit nullable array parameters
