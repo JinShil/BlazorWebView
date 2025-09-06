@@ -24,13 +24,4 @@
 			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
-</Project>
-
-                                                                                                                                                                                                                                                                                                          │
-- Upgrade target framework from net8.0 to net9.0│
-- Update GirCore packages to version 0.6.3 (Adw, Gtk-4.0, WebKit-6.0)│
-- Update Microsoft packages to version 9.0.8 (Components.WebView, Extensions.Logging.Console, Extensions.Hosting)│
-- Fix MemoryInputStream creation using GLib.Bytes.New instead of deprecated NewFromData method│
-- Remove custom InputStream workaround class, no longer needed with updated GirCore
-- Add missing GLib.Internal using statement│
-- Improve null safety with explicit nullable array parameters
+</Project> 
