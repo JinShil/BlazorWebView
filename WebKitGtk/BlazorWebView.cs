@@ -102,7 +102,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 	readonly string _relativeHostPath;
 	readonly ILogger<WebViewManager>? _logger;
 
-	void HandleUriScheme(URISchemeRequest request)
+	public void HandleUriScheme(URISchemeRequest request)
 	{
 		if (request.GetScheme() != Scheme)
 		{
@@ -119,19 +119,36 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 
 		if (TryGetResponseContent(uri, false, out var statusCode, out var statusMessage, out var content, out var headers))
 		{
-			using var ms = new MemoryStream();
-			content.CopyTo(ms);
-			byte[] data = ms.ToArray();
-			using var bytes = GLib.Bytes.New(data);
-			var memoryInputStream = Gio.MemoryInputStream.NewFromBytes(bytes);
+			const int bufferSize = 64 * 1024;
+			byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(bufferSize);
 
-			request.Finish(memoryInputStream, data.LongLength, headers["Content-Type"]);
+			var memoryInputStream = Gio.MemoryInputStream.New();
+			long totalLength = 0;
+
+			try
+			{
+				while (true)
+				{
+					int read = content.Read(buffer, 0, bufferSize);
+					if (read <= 0)
+						break;
+
+					var span = new Span<byte>(buffer, 0, read);
+					using var bytes = GLib.Bytes.New(span);
+					memoryInputStream.AddBytes(bytes);
+					totalLength += read;
+				}
+			}
+			finally
+			{
+				System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+			}
+			request.Finish(memoryInputStream, totalLength, headers["Content-Type"]);
 		}
 		else
 		{
 			throw new Exception($"Failed to serve \"{uri}\". {statusCode} - {statusMessage}");
 		}
-
 	}
 
 	protected override void NavigateCore(Uri absoluteUri)
