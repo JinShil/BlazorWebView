@@ -4,6 +4,7 @@ using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
 using System.Runtime.Versioning;
 using System.Web;
+using GLib.Internal;
 using WebKit;
 using MemoryInputStream = Gio.Internal.MemoryInputStream;
 using Uri = System.Uri;
@@ -24,13 +25,6 @@ public class BlazorWebView : WebView
 [UnsupportedOSPlatform("Windows")]
 class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
-	// Workaround for protection level access
-	class InputStream : Gio.InputStream
-	{
-		protected internal InputStream(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef)
-		{ }
-	}
-
 	const string Scheme = "app";
 	static readonly Uri BaseUri = new($"{Scheme}://localhost/");
 
@@ -84,8 +78,10 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 			""",
 			injectedFrames: UserContentInjectedFrames.AllFrames,
 			injectionTime: UserScriptInjectionTime.Start,
-			null,
-			null)
+			(string[]?)null
+			,
+			(string[]?)null
+			)
 		);
 
 		UserContentManager.ScriptMessageReceivedSignal.Connect(ucm, (_, signalArgs) =>
@@ -106,7 +102,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 	readonly string _relativeHostPath;
 	readonly ILogger<WebViewManager>? _logger;
 
-	void HandleUriScheme(URISchemeRequest request)
+	public void HandleUriScheme(URISchemeRequest request)
 	{
 		if (request.GetScheme() != Scheme)
 		{
@@ -123,11 +119,31 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 
 		if (TryGetResponseContent(uri, false, out var statusCode, out var statusMessage, out var content, out var headers))
 		{
-			using var ms = new MemoryStream();
-			content.CopyTo(ms);
-			var streamPtr = MemoryInputStream.NewFromData(ref ms.GetBuffer()[0], (uint)ms.Length, _ => { });
-			var inputStream = new InputStream(streamPtr, false);
-			request.Finish(inputStream, ms.Length, headers["Content-Type"]);
+			const int bufferSize = 64 * 1024;
+			byte[] buffer = System.Buffers.ArrayPool<byte>.Shared.Rent(bufferSize);
+
+			var memoryInputStream = Gio.MemoryInputStream.New();
+			long totalLength = 0;
+
+			try
+			{
+				while (true)
+				{
+					int read = content.Read(buffer, 0, bufferSize);
+					if (read <= 0)
+						break;
+
+					var span = new Span<byte>(buffer, 0, read);
+					using var bytes = GLib.Bytes.New(span);
+					memoryInputStream.AddBytes(bytes);
+					totalLength += read;
+				}
+			}
+			finally
+			{
+				System.Buffers.ArrayPool<byte>.Shared.Return(buffer);
+			}
+			request.Finish(memoryInputStream, totalLength, headers["Content-Type"]);
 		}
 		else
 		{
