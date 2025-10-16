@@ -24,13 +24,6 @@ public class BlazorWebView : WebView
 [UnsupportedOSPlatform("Windows")]
 class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 {
-	// Workaround for protection level access
-	class InputStream : Gio.InputStream
-	{
-		protected internal InputStream(IntPtr ptr, bool ownedRef) : base(ptr, ownedRef)
-		{ }
-	}
-
 	const string Scheme = "app";
 	static readonly Uri BaseUri = new($"{Scheme}://localhost/");
 
@@ -125,8 +118,8 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 		{
 			using var ms = new MemoryStream();
 			content.CopyTo(ms);
-			var streamPtr = MemoryInputStream.NewFromData(ref ms.GetBuffer()[0], (uint)ms.Length, _ => { });
-			var inputStream = new InputStream(streamPtr, false);
+			var streamPtr = MemoryInputStream.NewFromData(ref ms.GetBuffer()[0], (nint)ms.Length, _ => { });
+			var inputStream = new Gio.InputStream(new Gio.Internal.InputStreamHandle(streamPtr, false));
 			request.Finish(inputStream, ms.Length, headers["Content-Type"]);
 		}
 		else
