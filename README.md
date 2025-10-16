@@ -24,6 +24,9 @@ dotnet run
 ### Using Visual Studio Code
 On a Linux computer, simply open this repository in Visual Studio Code and press F5 to start a debug session.
 
+### Debugging a Remote ARM Linux Instance from Visual Studio
+This repository's solution has a "Remote ARM Linux" debug configuration that can be used to deploy and debug an instance of the test application on a Remote ARM Linux device.  Install the [Remote .NET Debugger Extension](http://www.comfilewiki.co.kr/en/doku.php?id=comfilepi:dotnet_core_development:remote_debugger:index), and follow the instructions there to utilize it.  Upvote [this issue](https://developercommunity.visualstudio.com/t/Convenient-way-to-add-a-remote-debug-con/917516) if you'd like Microsoft to add this capability to Visual Studio.
+
 ### Ubuntu 24.04 bwrap error fix
 Running the demo project may fail with the following error on ubuntu 24.04:
 
