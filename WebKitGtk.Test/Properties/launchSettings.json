@@ -7,7 +7,7 @@
       "commandName": "WSL2",
       "distributionName": ""
     },
-    "RaspberryPi": {
+    "Remote ARM Linux": {
       "commandName": "RemoteDotnetDebugger",
       "RemoteMachine": "192.168.0.4",
       "RemoteUser": "user"
