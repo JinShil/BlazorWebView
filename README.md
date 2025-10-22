@@ -62,9 +62,6 @@ This project was tested on:
 
 The root .vscode directory has the necessary configuration files to build, deploy, and debug a Raspberry Pi from a Debian Bullseyse 64-bit workstation PC.
 
-## License
-You may use this project under the [MIT license](./LICENSE-MIT) or the [Apache 2.0 license](./LICENSE-APACHE).
-
 ## Nuget Package
 
 For a Nuget package derived from this project, See [WebKit.BlazorWebView.GirCore](https://www.nuget.org/packages/WebKit.BlazorWebView.GirCore/).
