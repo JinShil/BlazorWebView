@@ -61,6 +61,8 @@ This is particularly important when using component libraries like MudBlazor tha
 
 The dispatcher automatically handles thread marshaling, so no additional synchronization code is needed in your application.
 
+For more details, see [THREADING.md](./THREADING.md).
+
 ## Status
 This project was tested on:
 - Windows Subsystem for Linux. Detailed setup instructions are available [here](./WSL2.md).
