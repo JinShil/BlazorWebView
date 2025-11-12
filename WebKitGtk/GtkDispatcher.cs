@@ -3,6 +3,24 @@ using System.Runtime.Versioning;
 
 namespace WebKitGtk;
 
+/// <summary>
+/// A custom dispatcher implementation for GTK/GLib that ensures thread-safe operation
+/// of Blazor WebView components.
+/// </summary>
+/// <remarks>
+/// This dispatcher serializes all Blazor render operations and JavaScript interop calls
+/// on the GTK main thread using GLib's idle callback mechanism. This prevents race
+/// conditions that can occur when multiple threads attempt to process render batches
+/// simultaneously, which would result in render batch acknowledgements arriving out of order.
+/// 
+/// This is particularly important for component libraries like MudBlazor that generate
+/// many rapid JavaScript events. Without proper serialization, these events could trigger
+/// parallel render operations leading to InvalidOperationException with the message:
+/// "Received unexpected acknowledgement for render batch X (next batch should be Y)".
+/// 
+/// The dispatcher uses GLib.Functions.IdleAdd to queue work items on the main event loop,
+/// ensuring they execute sequentially on the correct thread.
+/// </remarks>
 [UnsupportedOSPlatform("OSX")]
 [UnsupportedOSPlatform("Windows")]
 internal class GtkDispatcher : Dispatcher

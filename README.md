@@ -53,6 +53,14 @@ You may need to install the following packages:
 * libadwaita-1-0
 * libwebkitgtk-6.0-4
 
+## Threading and Synchronization
+
+BlazorWebView uses a custom `GtkDispatcher` implementation to ensure thread-safe operation with the GTK/GLib event loop. This dispatcher serializes all Blazor render operations and JavaScript interop calls on the GTK main thread, preventing race conditions that could cause render batch acknowledgements to arrive out of order.
+
+This is particularly important when using component libraries like MudBlazor that generate many rapid JavaScript events, as parallel processing could otherwise lead to `InvalidOperationException: 'Received unexpected acknowledgement for render batch X (next batch should be Y)'`.
+
+The dispatcher automatically handles thread marshaling, so no additional synchronization code is needed in your application.
+
 ## Status
 This project was tested on:
 - Windows Subsystem for Linux. Detailed setup instructions are available [here](./WSL2.md).
