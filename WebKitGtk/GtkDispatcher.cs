@@ -88,7 +88,8 @@ internal class GtkDispatcher : Dispatcher
         {
             try
             {
-                workItem().ContinueWith(t =>
+                var task = workItem();
+                task.ContinueWith(t =>
                 {
                     if (t.IsFaulted)
                     {
@@ -102,7 +103,7 @@ internal class GtkDispatcher : Dispatcher
                     {
                         tcs.SetResult();
                     }
-                });
+                }, TaskScheduler.Default);
             }
             catch (Exception ex)
             {
@@ -155,7 +156,8 @@ internal class GtkDispatcher : Dispatcher
         {
             try
             {
-                workItem().ContinueWith(t =>
+                var task = workItem();
+                task.ContinueWith(t =>
                 {
                     if (t.IsFaulted)
                     {
@@ -169,7 +171,7 @@ internal class GtkDispatcher : Dispatcher
                     {
                         tcs.SetResult(t.Result);
                     }
-                });
+                }, TaskScheduler.Default);
             }
             catch (Exception ex)
             {
