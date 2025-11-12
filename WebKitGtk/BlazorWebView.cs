@@ -29,7 +29,7 @@ class WebViewManager : Microsoft.AspNetCore.Components.WebView.WebViewManager
 
 	public WebViewManager(WebView webView, IServiceProvider serviceProvider) : base(
 		serviceProvider,
-		Dispatcher.CreateDefault(),
+		GtkDispatcher.CreateDefault(),
 		BaseUri,
 		new PhysicalFileProvider(serviceProvider.GetRequiredService<BlazorWebViewOptions>().ContentRoot),
 		new(),
